@@ -9,12 +9,17 @@ to all modern browsers via Django.  JS enables interactive play.
 -Numbers Game (Get the target Number from 6 randomly generated numbers)
 -Conundrum Game (Find the 9-letter word that has been scrambled)
 
--The scoring formula: word length X 2 for the letters game.  Time Left + 10 for Numbers and Conundrum games.  
+##The scoring formula: 
+-Word length X 2 for the letters game.  
+-Time Left + 10 for the Numbers game
+-Time Left + 10 for the Conundrum game.  
 ## Technologies Used
 -Python 3.10
 -Django 4.2
--HTML / JS / CSs
+-HTML / JS / CSC / Bootstrap 4
 -SQLite
+-Docker 26.1.4
+-docker compose 2.27
 
 ## How to Run
 Run the compose.yml file 'docker compose up' 
