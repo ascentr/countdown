@@ -1,0 +1,39 @@
+
+
+
+{% load static %}
+<div class="col col-md-12" style="background-color: rgb(40, 250, 134);">
+  <nav class="navbar navbar-expand-md justify-content-right right-0">
+    <div style="width: 15%;">
+      <a class="navbar-brand" href="{% url 'index' %}" style="padding-left: 40px;">
+        <img src="{% static 'images/clock.png' %}" alt="ascentrick logo" height="50px">
+      </a>  
+    </div>
+    <button class="navbar-toggler" data-toggle="collapse" data-target="#mycollapse">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div style="width:70%; text-align: center; color: rgb(69, 68, 80);">
+      <h3>COUNTDOW GAME</h3>
+    </div>
+    <div class="collapse navbar-collapse" id="mycollapse" style="width: 15%;">
+
+      <div class="navbar-nav align-items-right ml-auto">
+
+        {% if user.is_authenticated %} 
+        <div class="col">        
+          <a class="nav-item nav-link black" href="{% url 'registration:logout' %}" aria-label="Logout"><i
+          class="fas fa-sign-out-alt"></i>Logout</a>
+        </div>
+        {% else %}
+
+        <a class="nav-item nav-link black" href="{% url 'registration:login' %}" aria-label="Login"><i
+            class="fas fa-sign-in-alt"></i> Login</a>
+
+        <a class="nav-item nav-link black" href="{% url 'registration:signup' %}" aria-label="Signup"><i
+            class="fas fa-user"></i> Signup </a>
+
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+</div>

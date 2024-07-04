@@ -1,0 +1,110 @@
+{% extends "base_cd.html" %}
+{% load static %}
+
+{% block header %}
+<link rel="stylesheet" href="{% static 'css/num_index.css' %}">
+<title>Daily Challenge - The Numbers Game</title>
+{% endblock  %}
+
+{% block content %}
+
+<div style="min-height: 100vh;">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 game-heading-wrapper">
+            <div class="game-heading"> Numbers Game Round </div> 
+        </div>
+    </div> 
+    <div class="row">
+      <div class="col-md-6 game-scores-wrapper">
+          <div class="row" style="width: 100%;">
+              <div class="col-md-3 offset-md-3">
+                  <span> Round Score : </span>  <span id="roundscore"></span>
+              </div>
+              <div class="col-md-3" style="text-align: right;"><span>Total Score:</span> <span id="totalscore"></span> 
+              </div>
+          </div>
+      </div>
+    </div> 
+
+    <div class="row">
+        <div class="col-md-6 game-display-wrapper">    
+            <div id="target" class="result">  </div>
+            <div id="display"> <button onclick="makeButtons(numArray,6,gameType)" class="btnControl">Reveal Numbers</button> </div>
+            <div id="display2"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3" style="display: flex; flex-direction: row; justify-content: center;">
+          <div class="calculator">
+            <div class="calculator-body">
+              <div id="time">TIME</div>
+                <form name="myForm">
+                  <div class="grid-container">
+                    <div class="grid-item-full"> 
+                      <input type="text" class="calculator-display my-input" name="answer" id="input_answer" >    
+                    </div>
+                    <div class="item operator" onclick="myForm.answer.value += '+' ">+</div>
+                    <div class="item operator" onclick="myForm.answer.value += '-' ">-</div>  
+                    <div class="item operator" onclick="myForm.answer.value += '*' ">X</div>
+                    <div class="item operator" onclick="myForm.answer.value += '/' ">/</div>
+                    <div class="item operator" onclick="myForm.answer.value += '(' ">(</div>
+                    <div class="item operator" onclick="myForm.answer.value += ')' ">)</div>
+                    <div class="grid-item-x2 operator2" onclick="evalAnswer()"     >=</div>
+                    <div class="item operator" id="backspace" onclick="backSpace();">DEL</div>
+                    <div class="item operator" id="clearButton" onclick=" enableDigits();">C</div> 
+                    <div class="grid-item-x2 operator2" onclick="makeBtn() ">SAVE</div>  
+                  </div>
+                </form>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="col-md-6 game-display-wrapper">
+            <div id="message"></div>
+            <div id="control"></div>
+            <div id="test"></div>
+            <div id="finish"></div>
+          </div>
+      </div>
+
+</div>
+
+
+<script type="text/javascript">
+    let gameType = 2
+    let archivedGame = sessionStorage.getItem('archivedGame')
+    console.log(archivedGame)
+    numScore = Number(sessionStorage.getItem("numScore")) 
+    totalScore = Number(sessionStorage.getItem("totalScore")) 
+    document.getElementById("totalscore").innerHTML = totalScore
+    if (sessionStorage.numScore) {
+      document.getElementById("roundscore").innerHTML = numScore
+      document.getElementById("message").innerHTML = "You have already played this round" +
+          "<br/>" +
+          '<button class="btnControl2" onclick="getUrl()" >Continue to Conundrum &#10140;</button>' ;
+      document.getElementById('display').innerHTML = `Round Completed for  ${numScore} points <br/>
+            <button class="btnControl2" onclick="getUrl()" >Continue to Conundrum &#10140;</button>`
+        
+    } else {
+        myForm.input_answer.value = ""
+
+        if (archivedGame == 'true' ) {
+          var numString = sessionStorage.getItem('numString')
+          var myTarget =  sessionStorage.getItem('myTarget')
+          var numArray = numString.split(",")  
+
+        } else {
+          var numString ='{{my_numbers}}'
+          var myTarget = '{{ target }}'
+          var numArray = numString.split(",")  
+        }
+    }
+</script>
+
+
+{% endblock  %}
+
+

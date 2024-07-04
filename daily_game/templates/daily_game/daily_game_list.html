@@ -1,0 +1,58 @@
+{% extends "base_cd.html" %}
+{% load static %}
+{% block header %}
+
+<style>
+    .flex-container {
+        display: flex;
+        font-size: 25px;
+        padding:5px;
+        text-align: center;
+        width: 280px;
+        height: 70px;
+    }
+
+    .extra-game-info {
+        color: rgb(255, 250, 250); 
+        font-size: small; 
+        text-decoration: none;
+    }
+
+</style>
+
+<title>Games Archive</title>
+{% endblock  %}
+
+{% block content %}
+
+<div style="min-height: 100vh;">
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 game-heading-wrapper">
+            <div class="game-heading"> Previous Games </div> 
+        </div>
+    </div> 
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="row text-center mt-5">
+                {% for game in games %}
+                <div class="col">
+                   <a href="{% url 'daily_game:gamedetail' game.id %}"> 
+                     <input type="button" value="{{ game }}" class="btn-primary bs-button-style1"> </input>
+                   </a> 
+                   <div class="text-center mb-3">
+                    <span class="extra-game-info">{{game.date}} </span> <br>
+                    <span class="extra-game-info">No of Plays:  </span><span class="extra-game-info" style="background-color: rgb(136, 133, 130); padding:3px"> {{game.num_plays}} </span>
+                   </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+
+
+</div>  <!--LAST TAG BEFORE FOOTER-->
+
+{% endblock  %}

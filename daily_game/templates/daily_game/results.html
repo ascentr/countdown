@@ -1,0 +1,148 @@
+{% extends "base_cd.html" %}
+{% load static %}
+{% block header %}
+
+<title>Results</title>
+{% endblock  %}
+
+{% block content %}
+
+<div style="min-height: 100vh;">
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 game-heading-wrapper">
+            <div class="game-heading"> Scores  </div> 
+        </div>
+    </div> 
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+
+            <div class="table-responsive">      
+                <div class="game-sub-heading"> Your scores for today's game: </div>   
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>    Total Score </th>
+                            <th>    Letters     </th>
+                            <th>    Numbers     </th>
+                            <th>    Conundrum   </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td id="total-score"></td>
+                            <td id="let-score"></td>
+                            <td id="num-score"></td>
+                            <td id="con-score"></td>
+                        </tr>
+                    </tbody>
+                </table> 
+            </div>
+        </div>
+    </div>
+<!--TABLE DIV ENDS HERE-->  
+
+
+<!-- CONDITIONALS FOR SUBMITTING SCORES-->
+    <div class="row">   
+        <div class="col-md-6 offset-md-3">
+            <div style="text-align: center;">
+                <div>
+                    <div id="form-form">
+                        <form method="post" name="scoresForm" id="scores">
+                            {% csrf_token %}
+                            <input type="hidden" id="frm-let-score" name="letScore">
+                            <input type="hidden" id="frm-num-score" name="numScore">
+                            <input type="hidden" id="frm-con-score" name="conScore">
+                            <input type="hidden" id="frm-total-score" name="total">
+                        </form>
+                    </div>
+                    <div id="submit-btn"></div>
+                </div>
+
+                {% if user.is_authenticated %}
+                <script>
+                    submitted = sessionStorage.getItem('submited')
+                    if (submitted == 'true') {  document.getElementById('submit-btn').innerHTML = 
+                            "<h5 style='color:#fff; '>SCORE UPDATED - THANKS FOR PLAYING </h5>"}
+                    else 
+                        {   document.getElementById('submit-btn').innerHTML = 
+                            "<button class='btnControl2' type='button' id='btnsubmit' onclick='return submitScores()'> SUBMIT SCORES </button>" }
+                </script>
+                {% else %}
+                    <p> Please <a href="{% url 'registration:login'   %}?next={{request.path}}" aria-label="Login" class="link-txt"> Login </a> or 
+                        <a href="{% url 'registration:signup' %}?next={{request.path}}"  aria-label="signup" class="link-txt"> Register </a> to submit scores.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row row-wrapper">
+        <div class="col-md-6 offset-md-3 justify-content-center">
+
+            <div class=" game-sub-heading"> Leader's Board: </div> 
+            <div class="table-responsive">          
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Player   </th>
+                            <th>Totals   </th>
+                            <th>Letters  </th>
+                            <th>Numbers  </th>
+                            <th>Conundrum</th>
+                            <th>Game     </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in scores %}
+                        <tr>
+                            <td>{{i.player}}</td>
+                            <td>{{i.score_total}}</td>
+                            <td>{{i.score_letters}}</td>
+                            <td>{{i.score_numbers}}</td>
+                            <td>{{i.score_conundrum}}</td>
+                            <td>{{i.game}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>  <!--TABLE DIV ENDS HERE-->    
+        </div>
+    </div>   <!-- END OF ROW HERE-->
+
+
+</div>  <!--LAST TAG BEFORE FOOTER-->
+            
+<script>
+    letScore = Number(sessionStorage.getItem("letScore"))
+    numScore = Number(sessionStorage.getItem("numScore"))
+    conScore = Number(sessionStorage.getItem("conScore"))
+    totalScore = Number(sessionStorage.getItem("totalScore"))
+
+    document.getElementById("let-score"  ).innerHTML = letScore
+    document.getElementById("num-score"  ).innerHTML = numScore
+    document.getElementById("con-score"  ).innerHTML = conScore
+    document.getElementById("total-score").innerHTML = totalScore
+
+    function submitScores() {
+        sessionStorage.setItem("submited", "true");
+        letScore = Number(sessionStorage.getItem("letScore"))
+        numScore = Number(sessionStorage.getItem("numScore"))
+        conScore = Number(sessionStorage.getItem("conScore"))
+        totalScore = Number(sessionStorage.getItem("totalScore"))
+
+        document.getElementById("frm-let-score").value = letScore
+        document.getElementById("frm-num-score").value = numScore
+        document.getElementById("frm-con-score").value = conScore
+        document.getElementById("frm-total-score").value = totalScore        
+        document.getElementById('scores').submit()
+    }
+
+</script>   
+              
+            
+
+{% endblock  %}

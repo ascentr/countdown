@@ -1,0 +1,74 @@
+{% extends "base_cd.html" %}
+{% load static %}
+{% block header %}
+
+<style>
+    .game-letters {
+        color: white; background-color: 
+        rgb(16, 97, 189); 
+        padding:5px; 
+        border:0px; 
+        border-radius: 5px;
+    }
+
+</style>
+
+<title>Project Home Page</title>
+{% endblock  %}
+
+{% block content %}
+
+<div style="min-height: 100vh;">
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3 game-heading-wrapper">
+            <div class="game-heading"> Game Detail for <span class="game-letters">{{game.letters}} </span> </h2> </div> 
+        </div>
+    </div> 
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="game-detail">
+            from {{ game.date }}
+            <h3>Scores:</h3>
+            {% if scores %}
+                <ul style="color: white;">
+                    {% for score in scores %}
+                        <li>
+                            Player: {{ score.player.username }} - Total Score: {{ score.score_total }}
+                            <ul>
+                                <li>Letters Score: {{ score.score_letters }}</li>
+                                <li>Numbers Score: {{ score.score_numbers }}</li>
+                                <li>Conundrum Score: {{ score.score_conundrum }}</li>
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No scores available for this game.</p>
+            {% endif %}
+            <p>
+              <a href="{%  url 'daily_game:letters' %}">
+               <input type="button" class="btn-primary bs-button-style1" value="Play This Game >>" onclick="makeButtons(letArray,9, archivedGame)"/> 
+              </a>
+        </div>
+      </div>
+    </div>
+
+
+</div>  <!--LAST TAG BEFORE FOOTER-->
+<script>
+    //remove scores from daily game to enable archived Game play
+    sessionStorage.removeItem('letScore')
+    sessionStorage.removeItem('totalScore')
+    sessionStorage.removeItem('numScore')
+    sessionStorage.removeItem('conScore')
+
+    sessionStorage.setItem('archivedGame', true)
+    sessionStorage.setItem('letString',   '{{ game.letters }}')
+    sessionStorage.setItem('numString',  '{{ game.numbers }}')
+    sessionStorage.setItem('myTarget',   '{{ game.num_target }}')
+    sessionStorage.setItem('cndword' ,   '{{ game.conundrum }}')
+    sessionStorage.setItem('game_id',    '{{game.id}}'    )
+</script>
+
+{% endblock  %}
